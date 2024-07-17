@@ -12,11 +12,14 @@ import ProtectedRoute from "./ProtectedRoute";
 import AnonymousRoute from "./AnonymousRoute";
 import Resources from "../page/resources/Resources";
 import ResourceDetail from "../page/resources/ResourceDetail";
+import SurveyList from "../page/survey/SurveyList";
+
 
 
 const Router = () => {
   
     const routes = createBrowserRouter([
+    
       {
         path: "/sign-up",
         element: <AnonymousRoute element={<SignUp />} />,
@@ -41,6 +44,10 @@ const Router = () => {
       {
         path: "/resources/:id",
         element: <ProtectedRoute element={<ResourceDetail />} />,
+      },
+      {
+        path: "/surveys",
+        element: <ProtectedRoute element={<SurveyList />} />,
       },
       {
         path: "*",

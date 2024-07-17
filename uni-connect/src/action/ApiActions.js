@@ -55,6 +55,16 @@ export async function apiFetchResources(queryParams) {
     }
 }
 
+//Surveys
+export async function apiFetchSurveys(queryParams) {
+    try {
+        const response = await axiosInstance.get(ApiRoutes.surveys, { params: queryParams });
+        console.log("apiFetchSurveys response", response);
+        return response.data;
+    } catch (e) {
+        return exceptionResponse("apiFetchSurveys", e);
+    }
+}
 export async function apiFetchResource(id) {
     try {
         const resourceUrl = ApiRoutes.resource(id);

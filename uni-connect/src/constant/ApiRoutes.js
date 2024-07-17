@@ -9,5 +9,6 @@ export default {
   profile: (userId) => `${API_BASE_URL}users/${userId}/profile`,
   resource: (resourceId) => `${API_BASE_URL}resources/${resourceId}`,
   resources: API_BASE_URL + "resources",
+  surveys: API_BASE_URL+ "surveys",
   resourceDownload: (resourceId) => `${API_BASE_URL}resources/${resourceId}/download`,
 };
