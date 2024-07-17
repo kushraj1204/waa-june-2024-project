@@ -1,6 +1,6 @@
 // src/components/SurveyList.js
 import React, { useState, useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';    
+import { Link } from 'react-router-dom';
 import { apiFetchSurveys } from '../../action/ApiActions';
 import { toast } from 'react-toastify';
 import AsideLeft from '../../component/AsideLeft';
@@ -10,8 +10,6 @@ import { AsideRight } from '../../component/AsideRight';
 import { AiOutlineArrowUp } from 'react-icons/ai';
 
 const SurveyList = () => {
-  //const [surveys, setSurveys] = useState([]);
-
   const hasFetchedData = useRef(false);
   const [surveys, setSurveys] = useState([]);
   const [page, setPage] = useState(0);
@@ -23,61 +21,55 @@ const SurveyList = () => {
     setSurveys([]); // Reset resources when new keyword is entered
     setPage(0);
     fetchSurveys(e.target.value, 0);
-};
+  };
 
   const fetchSurveys = async (key = keyword, currentPage = page) => {
-    setPage((currentPage)=>currentPage+1);
-    const response = await apiFetchSurveys({ "keyword": key, "size": 7, "page": currentPage+1 });
+    setPage((currentPage) => currentPage + 1);
+    const response = await apiFetchSurveys({ "keyword": key, "size": 7, "page": currentPage + 1 });
     if (response.status) {
-        setSurveys(prevItems => currentPage === 0 ? response.data.content : [...prevItems, ...response.data.content]);
-        setHasMore(!response.data.last);
+      setSurveys(prevItems => currentPage === 0 ? response.data.content : [...prevItems, ...response.data.content]);
+      setHasMore(!response.data.last);
     } else {
-        toast.error(response.message);
+      toast.error(response.message);
     }
-};
+  };
 
-useEffect(() => {
-    console.log("there");
+  useEffect(() => {
     if (!hasFetchedData.current) {
-        console.log("Triggered from here");
-        fetchSurveys("");
-        hasFetchedData.current = true;
+      fetchSurveys("");
+      hasFetchedData.current = true;
     }
-}, [page]);
+  }, [page]);
 
   return (
     <div className="container mx-auto p-4">
-        <MobileNavBar />
-
-<div className="flex justify-center px-5 sm:px-32 md:mt-4">
-    <div className="flex h-screen w-screen">
-        <AsideLeft />
-
-        <main className="md:mx-4 w-full sm:basis-2/3">
-            <h1 className="text-3xl font-bold mb-6">Surveys</h1>
+      <MobileNavBar />
+      <div className="flex justify-center px-5 sm:px-32 md:mt-4">
+        <div className="flex h-screen w-screen">
+          <AsideLeft />
+          <main className="md:mx-4 w-full sm:basis-2/3">
+            <h1 className="text-3xl font-bold mb-6 text-gray-800">Surveys</h1>
             <InfiniteScroll
-                dataLength={surveys.length}
-                next={fetchSurveys}
-                hasMore={hasMore}
-                loader={<h4>Loading...</h4>}
+              dataLength={surveys.length}
+              next={fetchSurveys}
+              hasMore={hasMore}
+              loader={<h4>Loading...</h4>}
             >
-                {surveys.map((survey) => (
-                    <>
-                    {/* <Resource key={survey.id} resource={resource} /> */}
-                    <h1>Anoj is Anoj</h1>
-                    </>
-
-                ))}
+              {surveys.map((survey) => (
+                <div key={survey.id} className="mb-4 p-4 border-b border-gray-200 hover:bg-gray-100 transition duration-200">
+                  <Link to='/home' className="text-lg font-semibold text-blue-600 hover:underline">
+                    {survey.title}
+                  </Link>
+                </div>
+              ))}
             </InfiniteScroll>
-
-        </main>
-
-        <AsideRight onEnter={onEnter} />
-        <a href="#">
-            <AiOutlineArrowUp className="hidden sm:block fixed bottom-0 right-20 bg-blue-300 text-slate-50 text-5xl p-3 rounded-full mb-2 mr-20 hover:bg-blue-500" />
-        </a>
-    </div>
-</div>
+          </main>
+          <AsideRight onEnter={onEnter} />
+          <a href="#" className="hidden sm:block fixed bottom-0 right-20 bg-blue-300 text-white text-5xl p-3 rounded-full mb-2 mr-20 hover:bg-blue-500 transition duration-200">
+            <AiOutlineArrowUp />
+          </a>
+        </div>
+      </div>
     </div>
   );
 };
