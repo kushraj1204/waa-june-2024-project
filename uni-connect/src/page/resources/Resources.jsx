@@ -34,9 +34,7 @@ function Resources() {
     };
 
     useEffect(() => {
-        console.log("there");
         if (!hasFetchedData.current) {
-            console.log("Triggered from here");
             fetchResources("");
             hasFetchedData.current = true;
         }
@@ -56,6 +54,7 @@ function Resources() {
                             dataLength={resources.length}
                             next={fetchResources}
                             hasMore={hasMore}
+                            key={crypto.randomUUID()}
                             loader={<h4>Loading...</h4>}
                         >
                             {resources.map((resource) => (

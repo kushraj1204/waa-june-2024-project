@@ -10,9 +10,12 @@ function Resource(props) {
     function downloadFile(file) {
         setFilename(file);
         const response = apiDownloadResource({ filename: file }, props.resource.id);
-        // const blob = response;
-        // const url = window.URL.createObjectURL(blob);
-        // setDownloadUrl(url);
+        response.then(result => {
+            const url = URL.createObjectURL(result);
+            setDownloadUrl(url);
+        }).catch(error => {
+            console.error(error);
+        });
     }
 
     useEffect(() => {
@@ -48,7 +51,6 @@ function Resource(props) {
                                 )
                             })
                         }
-
                         <a href={downloadUrl} ref={downloadLinkRef} download={filename} style={{ display: 'none' }}>Download</a>
                     </>
                 ) : (

@@ -45,6 +45,17 @@ export async function apiFetchProfile(id) {
     }
 }
 
+export async function apiSaveProfile(id,data) {
+    try {
+        const profileUrl = ApiRoutes.profile(id);
+        const response = await axiosInstance.post(profileUrl,data);
+        console.log("apiSaveProfile response", response);
+        return response.data;
+    } catch (e) {
+        return exceptionResponse("apiSaveProfile", e);
+    }
+}
+
 export async function apiFetchResources(queryParams) {
     try {
         const response = await axiosInstance.get(ApiRoutes.resources, { params: queryParams });
