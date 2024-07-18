@@ -120,6 +120,72 @@ export async function apiDownloadResource(data, id) {
     }
 }
 
+//Region->Surveys
+export async function apiFetchSurveys(queryParams) {
+    try {
+        const response = await axiosInstance.get(ApiRoutes.surveys, { params: queryParams });
+        console.log("apiFetchSurveys response", response);
+        return response.data;
+    } catch (e) {
+        return exceptionResponse("apiFetchSurveys", e);
+    }
+}
+
+export async function apiFetchSurveyQuestions(id) {
+    try {
+        const resourceUrl = ApiRoutes.surveyQuestions(id);
+        const response = await axiosInstance.get(resourceUrl);
+        console.log("apiFetchSurvey Questions response", response);
+        return response.data;
+    } catch (e) {
+        return exceptionResponse("apiFetchSurveyQuestions", e);
+    }
+}
+
+export async function submitSurveyAnswers(data) {
+  try {
+    const response = await axiosInstance.post(ApiRoutes.surveyAnswers, data);
+    console.log("submitSurveyAnswers response", response);
+    return response.data;
+  } catch (e) {
+    return exceptionResponse("submitSurveyAnswers", e);
+  }
+}
+
+export async function apiCreateSurvey(data) {
+    try {
+        const response = await axiosInstance.post(ApiRoutes.surveys,data);
+        console.log("apiSaveSurvey response", response);
+        return response.data;
+    } catch (e) {
+        return exceptionResponse("apiSaveSurvey", e);
+    }
+}
+
+export async function apiUpdateSurvey(id,data) {
+    try {
+        const resourceUrl = ApiRoutes.surveys(id);
+        const response = await axiosInstance.put(resourceUrl,data);
+        console.log("apiUpdateSurvey response", response);
+        return response.data;
+    } catch (e) {
+        return exceptionResponse("apiUpdateSurvey", e);
+    }
+}
+
+export async function apiDeleteSurvey(id) {
+    try {
+      //  const resourceUrl = ApiRoutes.deleteSurvey(id);
+        const response = await axiosInstance.delete(ApiRoutes.deleteSurvey(id));
+        console.log("apiDeleteSource response", response);
+        return response.data;
+    } catch (e) {
+        return exceptionResponse("apiDeleteSource", e);
+    }
+}
+//End of Survey
+
+
 export async function apiUploadResource(data, id) {
     try {
         const resourceUrl = ApiRoutes.resource(id);

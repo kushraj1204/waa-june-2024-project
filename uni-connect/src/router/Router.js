@@ -15,6 +15,8 @@ import Event from "../page/event/Event";
 import EventDetail from "../page/event/EventDetail";
 import Resources from "../page/resources/Resources";
 import ResourceDetail from "../page/resources/ResourceDetail";
+import Surveys from "../page/survey/Surveys";
+import SurveyQuestions from "../page/survey/SurveyQuestions";
 
 
 const Router = () => {
@@ -46,8 +48,16 @@ const Router = () => {
         element: <ProtectedRoute element={<ResourceDetail />} />,
       },
       {
+        path: "/surveys",
+        element: <ProtectedRoute element={<Surveys />} />,
+      },
+      {
+        path: "/survey/:id/questions",
+        element: <ProtectedRoute element={<SurveyQuestions />} />,
+
         path: "/users/:userId/resources/:id",
         element: <ProtectedRoute element={<ResourceDetail />} />,
+
       },
       {
         path:"/events",
