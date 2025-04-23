@@ -11,7 +11,7 @@ function MyDetails() {
     const [editType, setEditType] = useState('');
 
     const openModal = (data, type) => {
-        setEditData(data);
+        setEditData(data?data:(type=='achievements'?{univesity:"",majors:"",level:"",score:""}:(type=='interests')?{interest:""}:{activity:"",institute:"",accomplishment:""}));
         setEditType(type);
         setIsModalOpen(true);
     };
@@ -47,7 +47,8 @@ function MyDetails() {
         console.log(params)
         const response = await apiFetchProfile(params.userId);
         if (response.status) {
-            setProfile(response.data);
+            console.log("sas",response)
+            setProfile(response.data?response.data:{ achievements: [], interests: [], extraCurricularActivities: [] });
         } else {
             toast.error(response.message);
         }
@@ -76,27 +77,28 @@ function MyDetails() {
                         <p className="text-lg font-semibold">Majors: <span className="font-normal">{achievement.majors}</span></p>
                         <p className="text-lg font-semibold">Level: <span className="font-normal">{achievement.level}</span></p>
                         <p className="text-lg font-semibold">Score: <span className="font-normal">{achievement.score}</span></p>
-                        <button onClick={() => openModal(achievement, 'achievements')} className="mt-2 text-blue-500">Edit</button>
+
                     </div>
                 ))}
-
+                        <button onClick={() => openModal(profile.achievements[0], 'achievements')} className="mt-2 text-blue-500">Edit</button>
                 <h2 className="text-xl font-bold mt-8 mb-4">Interests</h2>
                 {profile.interests.map((interest, index) => (
                     <div key={index} className="mb-4 p-4 border border-gray-200 rounded-lg shadow-sm">
                         <p className="text-lg font-semibold">Interest: <span className="font-normal">{interest.interest}</span></p>
-                        <button onClick={() => openModal(interest, 'interests')} className="mt-2 text-blue-500">Edit</button>
+
                     </div>
                 ))}
-
+                        <button onClick={() => openModal(profile.interests[0], 'interests')} className="mt-2 text-blue-500">Edit</button>
                 <h2 className="text-xl font-bold mt-8 mb-4">Extra-Curricular Activities</h2>
                 {profile.extraCurricularActivities.map((activity, index) => (
                     <div key={index} className="mb-4 p-4 border border-gray-200 rounded-lg shadow-sm">
                         <p className="text-lg font-semibold">Activity: <span className="font-normal">{activity.activity}</span></p>
                         <p className="text-lg font-semibold">Institute: <span className="font-normal">{activity.institute}</span></p>
                         <p className="text-lg font-semibold">Accomplishment: <span className="font-normal">{activity.accomplishment}</span></p>
-                        <button onClick={() => openModal(activity, 'extraCurricularActivities')} className="mt-2 text-blue-500">Edit</button>
+
                     </div>
                 ))}
+                        <button onClick={() => openModal(profile.extraCurricularActivities[0], 'extraCurricularActivities')} className="mt-2 text-blue-500">Edit</button>
             </div>
 
             {isModalOpen && (

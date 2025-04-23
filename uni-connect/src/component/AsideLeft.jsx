@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import {AiFillHome, AiOutlineHome} from "react-icons/ai";
+import {AiFillHome, AiOutlineForm, AiOutlineHome, AiOutlineTags} from "react-icons/ai";
 import {MdExplore, MdOutlineBookmark, MdOutlineBookmarkBorder, MdOutlineExplore} from "react-icons/md";
 import {FaRegUser, FaUser} from "react-icons/fa";
 import {BiEditAlt} from "react-icons/bi";
@@ -86,19 +86,20 @@ function AsideLeft() {
                     <li>
                         <NavLink to={`/surveys`} className="flex py-4 gap-3 px-3 cursor-pointer hover:bg-slate-200 rounded-[15rem] active:bg-slate-100">
                             {({ isActive }) =>
-                                isActive ? (
-                                    <>
-                                        <FaUser className="text-[1.6rem] font-bold" />
-                                        <h2 className="text-xl px-1 hidden xl:block"> Surveys </h2>
-                                    </>
-                                ) : (
-                                    <>
-                                        <FaRegUser className="text-[1.6rem]" />
-                                        <h2 className="text-xl px-1 hidden xl:block"> Surveys </h2>
-                                    </>
-                                )}
+                            isActive ? (
+                                <>
+                                <AiOutlineForm className="text-[1.6rem] font-bold" />
+                                <h2 className="text-xl px-1 hidden xl:block">Surveys</h2>
+                                </>
+                            ) : (
+                                <>
+                                <AiOutlineForm className="text-[1.6rem]" />
+                                <h2 className="text-xl px-1 hidden xl:block">Surveys</h2>
+                                </>
+                            )}
                         </NavLink>
-                    </li>
+</li>
+
                     <li>
                         <NavLink to={`/users/${userId}/profile`} className="flex py-4 gap-3 px-3 cursor-pointer hover:bg-slate-200 rounded-[15rem] active:bg-slate-100">
                             {({ isActive }) =>
@@ -114,6 +115,25 @@ function AsideLeft() {
                                     </>
                                 )}
                         </NavLink>
+                    </li>
+                    <li>
+                    <li>
+                        <NavLink to={`/categories`} className="flex py-4 gap-3 px-3 cursor-pointer hover:bg-slate-200 rounded-[15rem] active:bg-slate-100">
+                            {({ isActive }) =>
+                            isActive ? (
+                                <>
+                                <AiOutlineTags className="text-[1.6rem] font-bold" />
+                                <h2 className="text-xl px-1 hidden xl:block">Category</h2>
+                                </>
+                            ) : (
+                                <>
+                                <AiOutlineTags className="text-[1.6rem]" />
+                                <h2 className="text-xl px-1 hidden xl:block">Category</h2>
+                                </>
+                            )}
+                        </NavLink>
+</li>
+
                     </li>
                     <li className="my-2 mx-1">
                         <button

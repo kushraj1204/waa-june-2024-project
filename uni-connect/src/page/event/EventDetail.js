@@ -1,11 +1,12 @@
 import {useParams} from "react-router";
 import {lazy, Suspense, useEffect, useState} from "react";
 import axios from "axios";
-import {apiFetchEventAttendees, apiFetchEventById} from "../../action/ApiActions";
+import {apiFetchEventAttendees, apiFetchEventById, apiFetchUsers} from "../../action/ApiActions";
 import MobileNavBar from "../../component/MobileNavBar";
 import AsideLeft from "../../component/AsideLeft";
 import {AsideRight} from "../../component/AsideRight";
 import {AiOutlineArrowUp} from "react-icons/ai";
+import Modal from "./Modal";
 
 const AttendeeList =
     lazy(() => import('./Attendees'));
@@ -17,21 +18,43 @@ function EventDetail() {
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage, setItemsPerPage] = useState(10);
     const [loading, setLoading] = useState(true);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [users, setUsers] = useState([])
 
-    useEffect(() => {
-        apiFetchEventById(id)
-            .then(res => setData(res.data))
-            .catch(e => console.log(e))
+    const openModal = () => {
+        setIsModalOpen(true);
+    };
+    const closeModal = () => {
+        setIsModalOpen(false);
+    };
+
+    const fetchEventAttendees = async () => {
         apiFetchEventAttendees(id, itemsPerPage, currentPage)
             .then(res => {
                 setAttendees(res.data.content)
                 setLoading(false);
             })
             .catch(e => console.log(e))
-    }, [id,currentPage, itemsPerPage]);
+    }
 
-    const addParticipant = async () => {
-    //TODO:
+    useEffect(() => {
+        apiFetchEventById(id)
+            .then(res => setData(res.data))
+            .catch(e => console.log(e))
+        fetchEventAttendees();
+        apiFetchUsers()
+            .then(res => {
+                setUsers(res.data.content);
+            })
+    }, [id, currentPage, itemsPerPage]);
+
+    const handleNewParticipantAddEvent = () => {
+        setIsModalOpen(true);
+    }
+
+    let newParticipants = [];
+    if(users.length> 0){
+        newParticipants = users.filter(u => !attendees.find(a => a.username === u.username));
     }
 
     return <div>
@@ -47,15 +70,22 @@ function EventDetail() {
                         <p className="text-gray-600 mb-4">Date: {data.date}</p>
                     </div>
                     <div className="bg-white p-4 rounded-lg shadow-md mb-4">
-                        {loading? <div></div> :
+                        {loading ? <div></div> :
                             <Suspense fallback={<p>Loading component...</p>}>
-                                <AttendeeList data={attendees} />
+                                <AttendeeList data={attendees}/>
                             </Suspense>}
                     </div>
                     <div>
-                        <button onClick={addParticipant} class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                        <button
+                            onClick={handleNewParticipantAddEvent}
+                            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                        >
                             Add new participant
                         </button>
+                        {isModalOpen && <Modal closeModal={closeModal}
+                                               dataList={newParticipants}
+                                               eventId={id}
+                                                handleAdd={fetchEventAttendees}/>}
                     </div>
                 </main>
                 <AsideRight/>
@@ -67,4 +97,5 @@ function EventDetail() {
         </div>
     </div>
 }
+
 export default EventDetail;

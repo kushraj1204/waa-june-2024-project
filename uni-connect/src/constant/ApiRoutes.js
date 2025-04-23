@@ -11,5 +11,13 @@ export default {
   resource: (resourceId) => `${API_BASE_URL}resources/${resourceId}`,
   resources: API_BASE_URL + "resources",
   resourceDownload: (resourceId) => `${API_BASE_URL}resources/${resourceId}/download`,
+  surveys: API_BASE_URL+ "surveys",
+  surveyParam:(surveyId)=>`${API_BASE_URL}surveys/${surveyId}`,
+  surveyQuestions:(surveyId) => `${API_BASE_URL}surveyQuestions/survey/${surveyId}`,
+ surveyAnswers: API_BASE_URL+ "survey-answers",
   myResources: (userId) => `${API_BASE_URL}users/${userId}/resources`,
+  categories: API_BASE_URL+ "categories",
+  cateogryParam:(categoryId)=>`${API_BASE_URL}categories/${categoryId}`,
+  surveyQuestionCRUD: API_BASE_URL+ "surveyQuestions",
+  surveyQuestionParam:(surveyQuestionId)=>`${API_BASE_URL}surveyQuestions/${surveyQuestionId}`,
 };

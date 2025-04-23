@@ -56,6 +56,18 @@ export async function apiFetchEventAttendees(id, size,page){
     }
 }
 
+export async function apiAddEventAttendee(eventId, userId) {
+    try {
+        const response = await axiosInstance
+            .post(`${ApiRoutes.events}/${eventId}/attendee`,
+            {"userId": userId});
+        console.log("api create event attendee response", response);
+    } catch (e) {
+        return exceptionResponse("apiLogin",e);
+    }
+}
+
+
 export async function apiFetchUsers() {
     try {
         const response = await axiosInstance.get(ApiRoutes.users);
@@ -120,6 +132,70 @@ export async function apiDownloadResource(data, id) {
     }
 }
 
+//Region->Surveys
+export async function apiFetchSurveys(queryParams) {
+    try {
+        const response = await axiosInstance.get(ApiRoutes.surveys, { params: queryParams });
+        console.log("apiFetchSurveys response", response);
+        return response.data;
+    } catch (e) {
+        return exceptionResponse("apiFetchSurveys", e);
+    }
+}
+
+export async function apiFetchSurveyQuestions(id) {
+    try {
+        const resourceUrl = ApiRoutes.surveyQuestions(id);
+        const response = await axiosInstance.get(resourceUrl);
+        console.log("apiFetchSurvey Questions response", response);
+        return response.data;
+    } catch (e) {
+        return exceptionResponse("apiFetchSurveyQuestions", e);
+    }
+}
+
+export async function submitSurveyAnswers(data) {
+  try {
+    const response = await axiosInstance.post(ApiRoutes.surveyAnswers, data);
+    console.log("submitSurveyAnswers response", response);
+    return response.data;
+  } catch (e) {
+    return exceptionResponse("submitSurveyAnswers", e);
+  }
+}
+
+export async function apiCreateSurvey(data) {
+    try {
+        const response = await axiosInstance.post(ApiRoutes.surveys,data);
+        console.log("apiSaveSurvey response", response);
+        return response.data;
+    } catch (e) {
+        return exceptionResponse("apiSaveSurvey", e);
+    }
+}
+
+export async function apiUpdateSurvey(id,data) {
+    try {
+        const response = await axiosInstance.put(ApiRoutes.surveyParam(id),data);
+        console.log("apiUpdateSurvey response", response);
+        return response.data;
+    } catch (e) {
+        return exceptionResponse("apiUpdateSurvey", e);
+    }
+}
+
+export async function apiDeleteSurvey(id) {
+    try {
+        const response = await axiosInstance.delete(ApiRoutes.surveyParam(id));
+        console.log("apiDeleteSource response", response);
+        return response.data;
+    } catch (e) {
+        return exceptionResponse("apiDeleteSource", e);
+    }
+}
+//End of Survey
+
+
 export async function apiUploadResource(data, id) {
     try {
         const resourceUrl = ApiRoutes.resource(id);
@@ -179,6 +255,77 @@ export async function apiUpdateResource(id,data) {
     }
 }
 
+//Region->Category
+export async function apiFetchCategories(queryParams) {
+    try {
+        const response = await axiosInstance.get(ApiRoutes.categories, { params: queryParams });
+        return response.data;
+    } catch (e) {
+        return exceptionResponse("apiFetchCategories", e);
+    }
+}
+
+export async function apiCreateCateogry(data) {
+    try {
+        const response = await axiosInstance.post(ApiRoutes.categories,data);
+        return response.data;
+    } catch (e) {
+        return exceptionResponse("apiSaveCategory", e);
+    }
+}
+
+export async function apiUpdateCategory(id,data) {
+    try {
+        const response = await axiosInstance.put(ApiRoutes.cateogryParam(id),data);
+        return response.data;
+    } catch (e) {
+        return exceptionResponse("apiUpdateCategory", e);
+    }
+}
+
+export async function apiDeleteCategory(id) {
+    try {
+        const response = await axiosInstance.delete(ApiRoutes.cateogryParam(id));
+        return response.data;
+    } catch (e) {
+        return exceptionResponse("apiDeleteCategory", e);
+    }
+}
+//End of Survey
+
+//Survey Question
+export async function apiCreateSurveyQuestion(data) {
+    try {
+        console.log(data.question.question);
+        const currentDate = new Date().toISOString().split('T')[0];
+        const response = await axiosInstance.post(ApiRoutes.surveyQuestionCRUD,{
+            surveyId: data.surveyId,
+            question: data.question.question,
+            dueDate: currentDate,
+        });
+        return response.data;
+    } catch (e) {
+        return exceptionResponse("apiSaveSurveyQuestions", e);
+    }
+}
+
+export async function apiUpdateSurveyQuestion(id,data) {
+    try {
+        const response = await axiosInstance.put(ApiRoutes.surveyQuestionParam(id),data);
+        return response.data;
+    } catch (e) {
+        return exceptionResponse("apiUpdateSurveyQuestion", e);
+    }
+}
+
+export async function apiDeleteSurveyQueston(id) {
+    try {
+        const response = await axiosInstance.delete(ApiRoutes.surveyQuestionParam(id));
+        return response.data;
+    } catch (e) {
+        return exceptionResponse("apiDeleteQuestion", e);
+    }
+}
 export function exceptionResponse(apiName, e) {
     console.log(apiName + " exception", e?.response?.data ?? e.message);
     return e?.response?.data ?? getErrorResponseObject(e.message);
